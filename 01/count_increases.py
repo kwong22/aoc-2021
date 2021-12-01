@@ -15,6 +15,10 @@ def read_lines_from_file(fname):
             output.append(line)
     return output
 
+def read_ints_from_file(fname):
+    lines = read_lines_from_file(fname)
+    return [int(line) for line in lines]
+
 def count_increases(depths):
     """Counts number of increases between consecutive integers.
 
@@ -35,6 +39,4 @@ def count_increases(depths):
     return num_increases
 
 if __name__ == '__main__':
-    lines = read_lines_from_file('input')
-    ints = [int(line) for line in lines]
-    print(count_increases(ints))
+    print(count_increases(read_ints_from_file('input')))

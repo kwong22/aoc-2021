@@ -15,6 +15,10 @@ def read_lines_from_file(fname):
             output.append(line)
     return output
 
+def read_ints_from_file(fname):
+    lines = read_lines_from_file(fname)
+    return [int(line) for line in lines]
+
 def count_increases_window(depths, win_size=3):
     """Counts number of increases between consecutive windows of certain size.
 
@@ -36,6 +40,4 @@ def count_increases_window(depths, win_size=3):
     return num_increases
 
 if __name__ == '__main__':
-    lines = read_lines_from_file('input')
-    ints = [int(line) for line in lines]
-    print(count_increases_window(ints))
+    print(count_increases_window(read_ints_from_file('input')))
