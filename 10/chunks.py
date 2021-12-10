@@ -48,34 +48,6 @@ def score_corrupted_lines(lines):
 
     return total_score
 
-def discard_corrupted_lines(lines):
-    open_chars = ['(', '[', '{', '<']
-
-    close_to_open = {
-            ')': '(',
-            ']': '[',
-            '}': '{',
-            '>': '<'
-            }
-
-    corrupted_idxs = []
-
-    for i in range(len(lines)):
-        char_buff = []
-        for c in lines[i]:
-            if c in open_chars:
-                char_buff.append(c)
-            else:
-                if close_to_open[c] == char_buff[-1]:
-                    char_buff.pop()
-                else:
-                    corrupted_idxs.append(i)
-                    break
-
-    with open('input_without_corrupted', 'w') as f:
-        f.writelines([lines[i] + '\n' for i, line in enumerate(lines) if i not
-            in corrupted_idxs])
-
 def autocomplete_lines(lines):
     open_chars = ['(', '[', '{', '<']
 
@@ -99,11 +71,21 @@ def autocomplete_lines(lines):
 
     for line in lines:
         char_buff = []
+        corrupted = False
         for c in line:
             if c in open_chars:
                 char_buff.append(c)
             else:
-                char_buff.pop()
+                if close_to_open[c] == char_buff[-1]:
+                    char_buff.pop()
+                else:
+                    # This line is corrupted
+                    corrupted = True
+                    break
+
+        if corrupted:
+            # Do not compute score for corrupted lines
+            continue
 
         # Complete the line
         line_score = 0
@@ -118,6 +100,4 @@ def autocomplete_lines(lines):
 if __name__ == '__main__':
     lines = read_lines_from_file('input')
     print(score_corrupted_lines(lines))
-
-    filtered_lines = read_lines_from_file('input_without_corrupted')
-    print(autocomplete_lines(filtered_lines))
+    print(autocomplete_lines(lines))
