@@ -40,6 +40,22 @@ def simulate_fish(fish, num_days):
 
     return len(temp)
 
+def simulate_fish2(fish, num_days):
+    fish_by_day = [0] * 9
+    for f in fish:
+        fish_by_day[f] += 1
+
+    for _ in range(num_days):
+        new_fish = fish_by_day[0]
+        for i in range(8):
+            fish_by_day[i] = fish_by_day[i + 1]
+        fish_by_day[6] += new_fish
+        fish_by_day[8] = new_fish
+
+    return sum(fish_by_day)
+
 if __name__ == '__main__':
     fish = read_fish_from_line(read_lines_from_file('input')[0])
     print(simulate_fish(fish, 80))
+    print(simulate_fish2(fish, 80))
+    print(simulate_fish2(fish, 256))
